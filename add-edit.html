@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Add/Edit Employee - Employee Directory</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <a href="index.html" class="back-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15,18 9,12 15,6"></polyline>
+                        </svg>
+                        Back to Directory
+                    </a>
+                    <h1 class="logo" id="formTitle">Add Employee</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="form-container">
+                <div class="form-card">
+                    <form id="employeeForm" class="employee-form">
+                        <!-- Personal Information Section -->
+                        <div class="form-section">
+                            <h2 class="section-title">Personal Information</h2>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName" class="form-label">First Name *</label>
+                                    <input 
+                                        type="text" 
+                                        id="firstName" 
+                                        name="firstName" 
+                                        class="form-input" 
+                                        placeholder="Enter first name"
+                                        required
+                                    >
+                                    <div class="error-message" id="firstNameError"></div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="lastName" class="form-label">Last Name *</label>
+                                    <input 
+                                        type="text" 
+                                        id="lastName" 
+                                        name="lastName" 
+                                        class="form-input" 
+                                        placeholder="Enter last name"
+                                        required
+                                    >
+                                    <div class="error-message" id="lastNameError"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    class="form-input" 
+                                    placeholder="Enter email address"
+                                    required
+                                >
+                                <div class="error-message" id="emailError"></div>
+                            </div>
+                        </div>
+
+                        <!-- Work Information Section -->
+                        <div class="form-section">
+                            <h2 class="section-title">Work Information</h2>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="department" class="form-label">Department *</label>
+                                    <select id="department" name="department" class="form-select" required>
+                                        <option value="">Select department</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Sales">Sales</option>
+                                        <option value="Human Resources">Human Resources</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Operations">Operations</option>
+                                        <option value="Product">Product</option>
+                                        <option value="Design">Design</option>
+                                        <option value="Customer Support">Customer Support</option>
+                                        <option value="Legal">Legal</option>
+                                    </select>
+                                    <div class="error-message" id="departmentError"></div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="role" class="form-label">Role *</label>
+                                    <select id="role" name="role" class="form-select" required>
+                                        <option value="">Select role</option>
+                                        <option value="Manager">Manager</option>
+                                        <option value="Senior">Senior</option>
+                                        <option value="Mid-level">Mid-level</option>
+                                        <option value="Junior">Junior</option>
+                                        <option value="Intern">Intern</option>
+                                        <option value="Director">Director</option>
+                                        <option value="VP">VP</option>
+                                        <option value="C-Level">C-Level</option>
+                                        <option value="Lead">Lead</option>
+                                        <option value="Specialist">Specialist</option>
+                                    </select>
+                                    <div class="error-message" id="roleError"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="saveBtn">
+                                <span class="btn-text">Save Employee</span>
+                                <div class="btn-loading" style="display: none;">
+                                    <div class="spinner-small"></div>
+                                    <span>Saving...</span>
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- JavaScript -->
+    <script src="js/utils.js"></script>
+    <script src="js/employee.js"></script>
+    <script src="js/form.js"></script>
+</body>
+</html> 

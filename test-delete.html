@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Functionality Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .test-button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #c82333;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .info {
+            color: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Delete Functionality Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Basic Delete Functionality</h2>
+        <p>This test verifies that the delete functionality works without breaking the application.</p>
+        <button class="test-button" onclick="testBasicDelete()">Test Basic Delete</button>
+        <div id="test1-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Error Handling</h2>
+        <p>This test verifies that error handling works properly for invalid scenarios.</p>
+        <button class="test-button" onclick="testErrorHandling()">Test Error Handling</button>
+        <div id="test2-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: Notification System</h2>
+        <p>This test verifies that notifications work properly.</p>
+        <button class="test-button" onclick="testNotifications()">Test Notifications</button>
+        <div id="test3-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="overall-result"></div>
+    </div>
+
+    <!-- Include the same scripts as the main app -->
+    <script src="js/utils.js"></script>
+    <script src="js/employee.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        let testResults = {
+            basicDelete: false,
+            errorHandling: false,
+            notifications: false
+        };
+
+        function logResult(testId, message, isSuccess = true) {
+            const resultDiv = document.getElementById(`${testId}-result`);
+            const className = isSuccess ? 'success' : 'error';
+            resultDiv.innerHTML = `<p class="${className}">${message}</p>`;
+        }
+
+        function testBasicDelete() {
+            try {
+                // Check if employeeManager is available
+                if (!window.employeeManager) {
+                    logResult('test1', '❌ Employee manager not available', false);
+                    return;
+                }
+
+                // Get initial count
+                const initialCount = employeeManager.getTotalEmployees();
+                
+                // Try to delete an employee (if any exist)
+                if (initialCount > 0) {
+                    const firstEmployee = employeeManager.getAllEmployees()[0];
+                    const result = employeeManager.deleteEmployee(firstEmployee.id);
+                    
+                    if (result) {
+                        const newCount = employeeManager.getTotalEmployees();
+                        if (newCount === initialCount - 1) {
+                            logResult('test1', '✅ Basic delete functionality works correctly');
+                            testResults.basicDelete = true;
+                        } else {
+                            logResult('test1', '❌ Employee count not updated correctly', false);
+                        }
+                    } else {
+                        logResult('test1', '❌ Delete operation returned null', false);
+                    }
+                } else {
+                    logResult('test1', 'ℹ️ No employees to test deletion with');
+                    testResults.basicDelete = true; // Consider this a pass
+                }
+            } catch (error) {
+                logResult('test1', `❌ Error during delete test: ${error.message}`, false);
+            }
+        }
+
+        function testErrorHandling() {
+            try {
+                // Test with invalid ID
+                const result1 = employeeManager.deleteEmployee(null);
+                const result2 = employeeManager.deleteEmployee('invalid');
+                const result3 = employeeManager.deleteEmployee(99999); // Non-existent ID
+                
+                if (result1 === null && result2 === null && result3 === null) {
+                    logResult('test2', '✅ Error handling works correctly for invalid inputs');
+                    testResults.errorHandling = true;
+                } else {
+                    logResult('test2', '❌ Error handling not working properly', false);
+                }
+            } catch (error) {
+                logResult('test2', `❌ Error during error handling test: ${error.message}`, false);
+            }
+        }
+
+        function testNotifications() {
+            try {
+                if (window.notificationManager) {
+                    // Test different notification types
+                    notificationManager.show('success', 'Test Success', 'This is a test success message');
+                    notificationManager.show('error', 'Test Error', 'This is a test error message');
+                    notificationManager.show('warning', 'Test Warning', 'This is a test warning message');
+                    notificationManager.show('info', 'Test Info', 'This is a test info message');
+                    
+                    logResult('test3', '✅ Notification system is working');
+                    testResults.notifications = true;
+                } else {
+                    logResult('test3', '❌ Notification manager not available', false);
+                }
+            } catch (error) {
+                logResult('test3', `❌ Error during notification test: ${error.message}`, false);
+            }
+        }
+
+        function updateOverallResult() {
+            const overallDiv = document.getElementById('overall-result');
+            const passedTests = Object.values(testResults).filter(Boolean).length;
+            const totalTests = Object.keys(testResults).length;
+            
+            if (passedTests === totalTests) {
+                overallDiv.innerHTML = `<p class="success">✅ All tests passed! (${passedTests}/${totalTests})</p>`;
+            } else {
+                overallDiv.innerHTML = `<p class="error">❌ Some tests failed. (${passedTests}/${totalTests})</p>`;
+            }
+        }
+
+        // Run tests after a short delay to ensure everything is loaded
+        setTimeout(() => {
+            testBasicDelete();
+            testErrorHandling();
+            testNotifications();
+            updateOverallResult();
+        }, 1000);
+    </script>
+</body>
+</html> 

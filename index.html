@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Employee Directory</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">Employee Directory</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addEmployeeBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Employee
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Search and Filter Bar -->
+            <div class="controls-bar">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search employees by name or email...">
+                    </div>
+                </div>
+                
+                <div class="filter-controls">
+                    <button class="btn btn-secondary" id="filterBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46 22,3"></polygon>
+                        </svg>
+                        Filter
+                    </button>
+                    <select id="sortSelect" class="sort-select">
+                        <option value="">Sort by...</option>
+                        <option value="firstName">First Name</option>
+                        <option value="department">Department</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filter Sidebar -->
+            <div class="filter-sidebar" id="filterSidebar">
+                <div class="filter-header">
+                    <h3>Filters</h3>
+                    <button class="close-btn" id="closeFilterBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="filter-section">
+                    <h4>Department</h4>
+                    <div class="filter-options" id="departmentFilters">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h4>Role</h4>
+                    <div class="filter-options" id="roleFilters">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="btn btn-secondary" id="clearFiltersBtn">Clear All</button>
+                    <button class="btn btn-primary" id="applyFiltersBtn">Apply Filters</button>
+                </div>
+            </div>
+
+            <!-- Employee Grid -->
+            <div class="employee-container">
+                <div class="employee-grid" id="employeeGrid">
+                    <!-- Freemarker template will be rendered here -->
+                </div>
+                
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState">
+                    <div class="spinner"></div>
+                    <p>Loading employees...</p>
+                </div>
+                
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="m23 21-2-2m-2 2a2 2 0 0 1-2-2m2 2 2-2"></path>
+                    </svg>
+                    <h3>No employees found</h3>
+                    <p>Try adjusting your search or filters</p>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    <span id="paginationInfo">Showing 1-10 of 0 employees</span>
+                </div>
+                
+                <div class="pagination-controls">
+                    <select id="pageSizeSelect" class="page-size-select">
+                        <option value="10">10 per page</option>
+                        <option value="25">25 per page</option>
+                        <option value="50">50 per page</option>
+                        <option value="100">100 per page</option>
+                    </select>
+                    
+                    <div class="pagination-buttons">
+                        <button class="btn btn-secondary" id="prevPageBtn" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15,18 9,12 15,6"></polyline>
+                            </svg>
+                            Previous
+                        </button>
+                        <span class="page-info" id="pageInfo">Page 1 of 1</span>
+                        <button class="btn btn-secondary" id="nextPageBtn" disabled>
+                            Next
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9,18 15,12 9,6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delete Employee</h3>
+                <button class="close-btn" id="closeDeleteModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="deleteEmployeeName"></strong>?</p>
+                <p class="warning-text">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Delete Employee</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+
+
+    <!-- JavaScript -->
+    <script src="js/utils.js"></script>
+    <script src="js/employee.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
